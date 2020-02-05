@@ -1,12 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+        <title>Do you like NodeJS?</title>
+        <meta charset="UTF-8" />
         <style>
-            
+            body {
+                color: blue;
+                text-align: center;
+            }
+            img {
+                width: 300px;
+                height: auto;
+                margin: 2em;
+            }
+            h2 {
+                margin-bottom: 0;
+            }
+            div {
+                margin: 1em;
+            }
+            @media (max-width: 500px), (max-height: 500px) {
+                img {
+                    display: none;
+                }
+            }
         </style>
     </head>
     <body>
-        
+        <header>
+            <h2>Do you like NodeJS?</h2>
+            <img src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg" alt="NodeJS" />
+        </header>
+        <div>
+            <form method="POST" id="nodejs-form">
+                <input type="radio" id="nodejs-yes" name="nodejs" checked />
+                <label for="nodejs-yes">Yes</label>
+                <input type="radio" id="nodejs-no" name="nodejs" />
+                <label for="nodejs-no">No</label>
+                <button type="submit" form="nodejs-form">Submit</button>
+            </form>
+        </div>
     </body>
 </html>
