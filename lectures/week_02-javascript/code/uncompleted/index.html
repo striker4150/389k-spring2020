@@ -8,14 +8,41 @@
 	<h1>Hello World</h1> 	
 
 	<script>
-		
+		var animalSum = 0;
 
 		// Arrays
+		var usernames = ["Cammie", "Chidi", "Benny", "Chirag"];
+		var passwords = ["$56#hdj", "$56#asd", "$56#mqw", "$56#sla"];
+
+		var logins = [];
+
+		var animals = {"rat": 0, "Hamster": 100, "cat": 200, "dog": 300, "rabbit": 400, "lizard": 500, "goldfish": 600, "fly": 700};
+		var animalDiffs = [];
 
 		// For Loops
+		for(var i = 0; i < usernames.length; i++) {
+			logins.push({ username: usernames[i], password: passwords[i] });
+		}
+
+		for(var animal in animals) {
+			if(animal.length == 3) {
+				animalSum += animals[animal];
+			}
+		}
+		for(var animal in animals) {
+			if(animal.length != 3) {
+				animalDiffs.push(animals[animal] - animalSum);
+			}
+		}
 
 		// First class Functions
+		function getLogins() {
+			return logins;
+		}
 
+		function animalDiff() {
+			return animalDiffs;
+		}
 	</script>
 
 </body>
