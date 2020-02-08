@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DK's Personal Website - Games</title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+        <link rel="stylesheet" href="base.css" />
+        <style>
+            ol li {
+                margin: 30px;
+            }
+            .game-img {
+                width: auto;
+                height: 50px;
+                margin: -15px 10px;
+            }
+            @media (max-width: 800px) {
+                img {
+                    display: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="banner">
+            <h1 class="banner">DK's Website</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a id="active" href="games.html">Game Links</a></li>
+                <li><a href="programming.html">Programming Experience</a></li>
+            </ul>
+        </nav>
+        <div id="content">
+            <header>
+                <h1>My favorite games</h1>
+            </header>
+            <ol>
+                <li><img src="https://upload.wikimedia.org/wikipedia/commons/6/65/Osu%21Logo_%282015%29.svg" title="osu" class="game-img" />osu!</li>
+                <li><img src="https://i.ya-webdesign.com/images/left-4-dead-2-png-4.png" title="L4D2" class="game-img" />Left 4 Dead 2</li>
+                <li><img src="https://dragalialost.com/assets/en/images/common/logo_title.png" title="DL" class="game-img" />Dragalia Lost</li>
+                <li><img src="https://fireemblemwiki.org/w/images/b/b1/FEH_logo.png" title="FEH" class="game-img" />Fire Emblem Heroes</li>
+            </ol>
+        </div>
+    </body>
+</html>
