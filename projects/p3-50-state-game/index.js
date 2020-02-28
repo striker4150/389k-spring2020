@@ -76,3 +76,123 @@ var abvMap = {
  * will be different. Make sure you Google! We urge you to post in Piazza if
  * you are stuck.
  */
+var BASE_URL = "https://api.census.gov/data/2013/language"
+var GAME_MILLISEC = 20000;
+
+//var STATES = Object.keys(abvMap).sort();
+var STATES = states.sort();
+var LOWERCASE_STATES = $.map(STATES, function(stateName) {
+    return stateName.toLowerCase();
+});
+
+var stateStats = {};
+var correctAnswers = [];
+var timer;
+
+function startTimer() {
+    var startTime = Date.now();
+    var elapsedTime = 0;
+    timer = setInterval(function() {
+        elapsedTime = Date.now() - startTime;
+        if(elapsedTime <= GAME_MILLISEC) {
+            // Display time with decisecond precision
+            $("#timer").text(((GAME_MILLISEC - elapsedTime) / 1000.0).toFixed(1));
+        } else {
+            stopGame();
+        }
+    }, 1);
+}
+
+function playGame() {
+    var input, index;
+    // Reset game
+    correctAnswers = [];
+    $("#state-list").html("");
+    // Enable input box
+    $("#state-input").prop("disabled", false);
+    $('#state-input').keyup(function () {
+        input = $(this).val().toLowerCase();
+        index = $.inArray(input, LOWERCASE_STATES);
+        // If the user input is not a duplicate and is a state
+        if($.inArray(input, correctAnswers) == -1 && index != -1) {
+            // Disable the input until processing is finished
+            $(this).prop("disabled", true);
+
+            // Create the new <li> element
+            var newLi = $("<li>");
+            newLi.text(STATES[index]);
+            try {
+                newLi.prop("title", stateStats[STATES[index]].toLocaleString()); // Localize number of Spanish speakers
+            } catch(e) {
+                console.log("Error setting title text: " + e)
+            }
+
+            // Put the <li> element in the <ul>
+            $("#state-list").append(newLi);
+            // Sort the list
+            $("#state-list").html(
+                $("#state-list").children("li").sort(function (a, b) {
+                    return $(a).text().toLowerCase().localeCompare($(b).text().toLowerCase());
+                })
+            );
+            correctAnswers.push(input);
+
+            // Clear and re-enable input
+            $(this).val("");
+            $(this).prop("disabled", false);
+
+            // End the game if the user correctly names all states
+            if(correctAnswers.length == STATES.length) {
+                stopGame();
+            }
+        }
+    });
+    startTimer();
+    console.log("Game is playing...")
+}
+
+function stopGame() {
+    // Stop the timer
+    clearInterval(timer);
+    // Disable further input
+    $("#state-input").prop("disabled", true);
+    $("#state-input").val("");
+    if(correctAnswers.length == STATES.length) {
+        alert("You win!");
+    } else {
+        // Print score + missing states
+        var message = "Score: " + correctAnswers.length + " / " + STATES.length + "\n";
+        message += "\nMissing states:\n"
+        // Filter out states that were correctly named
+        var missingStates = STATES.filter(stateName => !correctAnswers.includes(stateName.toLowerCase()));
+        for(var i in missingStates) {
+            message += "\n" + missingStates[i];
+        }
+        alert(message);
+    }
+    console.log("Game is stopped!")
+}
+
+// Set default time
+$("#timer").text((GAME_MILLISEC / 1000.0).toFixed(1));
+
+// Preload state data
+var promises = [];
+$.each(STATES, function(_i, state) {
+    promises.push($.get(BASE_URL, { get: "EST", for: "state:" + abvMap[state], LAN: 625 }, function(data) {
+        try {
+            stateStats[state] = parseInt(data[1][0]);
+        } catch(e) {
+            console.log("Error parsing AJAX data: " + e)
+        }
+    }));
+});
+
+// Wait until data is loaded before enabling the start button
+$.when.apply($, promises).always(function () {
+    // Start the game when the button is pressed
+    console.log("Game loaded!");
+    $("#start").click(function() {
+        playGame();
+    });
+});
