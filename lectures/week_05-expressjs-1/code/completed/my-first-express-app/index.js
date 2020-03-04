@@ -62,6 +62,16 @@ app.post('/contacts', function(req,res) {
 	res.send("success");
 });
 
+app.delete('/contacts/:contact', function(req, res) {
+	var contact = req.params.contact;
+	if(contact in contacts) {
+		delete contacts[contact];
+		res.sendStatus(204);
+	} else {
+		res.sendStatus(404);
+	}
+});
+
 
 app.listen(3000, function() {
 	console.log("connected on port 3000");
