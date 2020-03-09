@@ -29,17 +29,33 @@ app.get("/", function(req, res) {
     // })
     // var html = `<html>\n<body>\n<table>CONTENTS</table>\n</body>\n</html>`;
     // res.send(html);
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var contents = "";
+    _.each(_DATA, function(i) {
+        contents += `\n\t\t<tr><td>${i.id}</td><td><a href="/pokemon/${i.id}">${i.name}</a></td></tr>`;
+    });
+    var html = `<html>\n<body>\n\t<table>${contents}\n\t</table>\n</body>\n</html>`;
+    res.send(html);
 });
 
 app.get("/pokemon/:pokemon_id", function(req, res) {
     // HINT : 
     // <tr><td>${i}</td><td>${JSON.stringify(result[i])}</td></tr>\n`;
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.findWhere(_DATA, { id: parseInt(req.params.pokemon_id) });
+    if (!pokemon) return res.status(404).send("Error: Pokemon not found");
+    var contents = "";
+    _.each(pokemon, function(val, key) {
+        contents += `\n\t\t<tr><td>${key}</td><td>${JSON.stringify(val)}</td></tr>`;
+    });
+    var html = `<html>\n<body>\n\t<table>${contents}\n\t</table>\n</body>\n</html>`;
+    res.send(html);
 });
 
 app.get("/pokemon/image/:pokemon_id", function(req, res) {
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.findWhere(_DATA, { id: parseInt(req.params.pokemon_id) });
+    if (!pokemon) return res.status(404).send("Error: Pokemon not found");
+    var url = `http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png`;
+    var html = `<html>\n<body>\n\t<img src="${url}">\n</body>\n</html>`;
+    res.send(html);
 });
 
 app.get("/api/id/:pokemon_id", function(req, res) {
@@ -51,26 +67,43 @@ app.get("/api/id/:pokemon_id", function(req, res) {
 });
 
 app.get("/api/evochain/:pokemon_name", function(req, res) {
-    res.send("UNIMPLEMENTED ENDPOINT");
-
+    var pokemon = _.findWhere(_DATA, { name: req.params.pokemon_name });
+    if (!pokemon) return res.json([]);
+    var evochain = _.union([pokemon.name], _.pluck(pokemon.prev_evolution, "name"), _.pluck(pokemon.next_evolution, "name"));
+    res.json(evochain.sort());
 });
 
 app.get("/api/type/:type", function(req, res) {
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.filter(_DATA, function(i) { return _.contains(i.type, req.params.type); });
+    if (pokemon.length == 0) return res.json([]);
+    res.json(_.pluck(pokemon, "name"));
 });
 
 app.get("/api/type/:type/heaviest", function(req, res) {
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.filter(_DATA, function(i) { return _.contains(i.type, req.params.type); });
+    if (pokemon.length == 0) return res.json({});
+    pokemon = _.max(pokemon, function(i) { return parseFloat(i.weight); });
+    res.json({ name: pokemon.name, weight: parseFloat(pokemon.weight) });
 });
 
 app.post("/api/weakness/:pokemon_name/add/:weakness_name", function(req, res) {
     // HINT: 
     // Use `pokeDataUtil.saveData(_DATA);`
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.findWhere(_DATA, { name: req.params.pokemon_name });
+    if (!pokemon) return res.json({});
+    if (!_.contains(pokemon.weaknesses, req.params.weakness_name)) {
+        pokemon.weaknesses.push(req.params.weakness_name);
+    }
+    pokeDataUtil.saveData(_DATA);
+    res.json({ name: pokemon.name, weaknesses: pokemon.weaknesses });
 });
 
 app.delete("/api/weakness/:pokemon_name/remove/:weakness_name", function(req, res) {
-    res.send("UNIMPLEMENTED ENDPOINT");
+    var pokemon = _.findWhere(_DATA, { name: req.params.pokemon_name });
+    if (!pokemon) return res.json({});
+    pokemon.weaknesses = _.without(pokemon.weaknesses, req.params.weakness_name);
+    pokeDataUtil.saveData(_DATA);
+    res.json({ name: pokemon.name, weaknesses: pokemon.weaknesses });
 });
 
 
