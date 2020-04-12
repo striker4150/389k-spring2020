@@ -1,0 +1,43 @@
+{
+    "games": [
+        {
+            "name": "Dauntless",
+            "price": 0,
+            "rating": 7.5,
+            "genre": "Action RPG",
+            "consoles": [
+                "Playstation 4",
+                "Nintendo Switch",
+                "Xbox One",
+                "PC"
+            ]
+        },
+        {
+            "name": "Osu",
+            "price": 0,
+            "rating": 8,
+            "genre": "Rhythm",
+            "consoles": [
+                "PC"
+            ]
+        },
+        {
+            "name": "CSGO",
+            "price": 0,
+            "rating": 9,
+            "genre": "Shooter",
+            "consoles": [
+                "PC"
+            ]
+        },
+        {
+            "name": "Animal Crossing: New Horizons",
+            "price": 59.99,
+            "rating": 9,
+            "genre": "Sim",
+            "consoles": [
+                "Nintendo Switch"
+            ]
+        }
+    ]
+}

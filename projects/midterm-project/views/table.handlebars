@@ -1,0 +1,32 @@
+<input id="search" class="form-control mr-sm-2 border border-primary" type="search" placeholder="Search" aria-label="Search" />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            {{#if games}}
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Genre</th>
+            <th>Consoles</th>
+            {{/if}}
+        </tr>
+    </thead>
+    <tbody>
+    {{#if data}}
+    {{#each data}}
+        <tr>
+            <td id="name">{{#if ../games}}{{this.name}}{{else}}<a href="/{{../category}}/{{this}}">{{this}}</a>{{/if}}</td>
+            {{#if ../games}}
+            <td>{{formatMoney this.price}}</td>
+            <td>{{this.rating}}</td>
+            <td>{{this.genre}}</td>
+            <td>{{formatArray this.consoles}}</td>
+            {{/if}}
+        </tr>
+    {{/each}}
+    {{/if}}
+    </tbody>
+</table>
+<div id="empty" style="display: none;">
+    No Results!
+</div>

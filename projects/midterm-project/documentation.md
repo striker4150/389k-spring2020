@@ -1,13 +1,13 @@
 
-# PROJECT NAME
+# Video Games
 
 ---
 
-Name: 
+Name: Darren Kam
 
-Date: 
+Date: April 7th, 2020
 
-Project Topic: 
+Project Topic: Video Games
 
 URL: 
 
@@ -17,38 +17,47 @@ URL:
 ### 1. Data Format and Storage
 
 Data point fields:
-- `Field 1`:     ...       `Type: ...`
-- `Field 2`:     ...       `Type: ...`
-- `Field 3`:     ...       `Type: ...`
-- `Field 4`:     ...       `Type: ...`
-- `Field 5`:     ...       `Type: ...`
+- `Field 1`: Name        `Type: String`
+- `Field 2`: Price       `Type: Number`
+- `Field 3`: Rating      `Type: Number`
+- `Field 4`: Genre       `Type: String`
+- `Field 5`: Consoles    `Type: [String]`
+
 
 Schema: 
 ```javascript
 {
-   ...
+    name: String,
+    price: Number,
+    rating: Number, 
+    genre: String,
+    consoles: [String]
 }
 ```
 
 ### 2. Add New Data
 
-HTML form route: `/...`
+HTML form route: `/addGame`
 
-POST endpoint route: `/api/...`
+POST endpoint route: `/api/addGame`
 
 Example Node.js POST request to endpoint: 
 ```javascript
 var request = require("request");
 
 var options = { 
-    method: 'POST',
-    url: 'http://localhost:3000/api/...',
+    method: "POST",
+    url: "http://localhost:3000/api/addGame",
     headers: { 
-        'content-type': 'application/x-www-form-urlencoded' 
+        "content-type": "application/x-www-form-urlencoded"
     },
     form: { 
-       ...
-    } 
+        name: "Dauntless", 
+        price: 0,
+        rating: 7.5,
+        genre: "Action RPG"
+        consoles: ["Playstation 4", "Nintendo Switch", "Xbox One", "PC"]
+    }
 };
 
 request(options, function (error, response, body) {
@@ -60,18 +69,17 @@ request(options, function (error, response, body) {
 
 ### 3. View Data
 
-GET endpoint route: `/api/...`
+GET endpoint route: `/api/getGames`
 
 ### 4. Search Data
 
-Search Field: ...
+Search Field: `name`
 
 ### 5. Navigation Pages
 
 Navigation Filters
-1. name -> `  route  `
-2. ... -> `  ...  `
-3. ... -> `  ...  `
-4. ... -> `  ...  `
-5. ... -> `  ...  `
-
+1. Alphabetical -> `/alphabetical`
+2. Free Games -> `/free`
+3. Sort by Rating -> `/highest_rated`
+4. Select by Genre -> `/genre/:genre_type`
+5. Select by Console -> `/console/:console_name`
