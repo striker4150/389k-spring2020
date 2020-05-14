@@ -1,5 +1,5 @@
 var winston = require('winston');
-var { transports: { Console }, format: { cli, combine, json, prettyPrint, timestamp } } = winston;
+var { transports: { Console }, format: { colorize, combine, json, printf, timestamp } } = winston;
 var DailyRotateFile = require('winston-daily-rotate-file');
 
 // Make log directory from https://stackoverflow.com/a/33773559
@@ -11,27 +11,25 @@ if(!fs.existsSync(logDir)) {
 }
 
 // Log format from https://github.com/winstonjs/winston/issues/1135#issuecomment-343980350
-const alignedWithColorsAndTime = winston.format.combine(
-  winston.format.colorize(),
-  winston.format.timestamp(),
-  winston.format.align(),
-  winston.format.printf((info) => {
+const logFormat = combine(
+  timestamp(),
+  printf((info) => {
     const {
       timestamp, level, message, ...args
     } = info;
 
     const ts = timestamp.slice(0, 19).replace('T', ' ');
-    return `${ts} [${level}]: ${message} ${Object.keys(args).length ? JSON.stringify(args, null, 2) : ''}`;
+    return `${ts} [${level}]: ${message}${Object.keys(args).length ? ' ' + JSON.stringify(args, null, 2) : ''}`;
   }),
 );
 
 var Logger = winston.loggers.add('vgreviews', {
   level: 'debug',
   transports: [
-    new Console({ format: alignedWithColorsAndTime }),
+    new Console({ format: combine(logFormat, colorize()) }),
     new DailyRotateFile({
-      filename: path.join(logDir, 'application-%DATE%.log'),
-      format: combine(timestamp(), json()),
+      filename: path.join(logDir, 'app-%DATE%.log'),
+      format: logFormat,
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
@@ -39,5 +37,10 @@ var Logger = winston.loggers.add('vgreviews', {
     })
   ]
 });
+Logger.stream = { 
+  write: function(message, encoding){ 
+    Logger.info(message); 
+  } 
+}
 
 module.exports = Logger
