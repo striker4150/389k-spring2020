@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Video Games</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item {{#if active.home}}active{{/if}}">
+            <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item {{#if active.alphabetical}}active{{/if}}">
+            <a class="nav-link" href="/alphabetical">Alphabetical</a>
+        </li>
+        <li class="nav-item {{#if active.free}}active{{/if}}">
+            <a class="nav-link" href="/free">Free Games</a>
+        </li>
+        <li class="nav-item {{#if active.highest_rated}}active{{/if}}">
+            <a class="nav-link" href="/highest_rated">Sort by Rating</a>
+        </li>
+        <li class="nav-item {{#if active.genre}}active{{/if}}">
+            <a class="nav-link" href="/genre">Select by Genre</a>
+        </li>
+        <li class="nav-item {{#if active.console}}active{{/if}}">
+            <a class="nav-link" href="/console">Select by Console</a>
+        </li>
+        <li id="new_game" class="nav-item {{#if active.new}}active{{/if}}">
+            <a class="nav-link" href="/addGame">Add New Game</a>
+        </li>
+    </ul>
+</nav>

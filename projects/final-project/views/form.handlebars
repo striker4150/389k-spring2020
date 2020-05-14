@@ -1,0 +1,33 @@
+{{#if error}}
+<div class="alert alert-danger" role="alert">
+    {{#if conflict}}<strong>A game already has that name!</strong> {{/if}}
+    {{#if price}}<strong>Price cannot be negative!</strong> {{/if}}
+    {{#if rating}}<strong>Rating has to be between 1 and 10!</strong> {{/if}}
+    {{#if invalid}}<strong>Something went wrong with your submission!</strong> {{/if}}
+    Change a few things up and try submitting again.
+</div>
+{{/if}}
+<form action="/addGame" method="POST">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input name="name" type="text" class="form-control" id="name" placeholder="Name" />
+    </div>
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input name="price" type="text" class="form-control" id="price" placeholder="Price" />
+    </div>
+    <div class="form-group">
+        <label for="rating">Rating</label>
+        <input name="rating" type="text" class="form-control" id="rating" placeholder="Rating" />
+    </div>
+    <div class="form-group">
+        <label for="genre">Genre</label>
+        <input name="genre" type="text" class="form-control" id="genre" placeholder="Genre" />
+    </div>
+    <div class="form-group">
+        <label for="consoles">Consoles</label>
+        <textarea name="consoles" class="form-control" id="consoles" rows="3"></textarea>
+        <small class="form-text text-muted">Enter a comma and space separated list.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

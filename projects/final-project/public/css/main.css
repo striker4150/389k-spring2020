@@ -1,0 +1,11 @@
+#content {
+    padding: 10px;
+}
+
+.border {
+    border-width: 2px !important;
+}
+
+#new_game {
+    padding-left: 50px;
+}
