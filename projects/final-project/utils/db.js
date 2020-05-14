@@ -7,7 +7,7 @@ dotenv.config();
 var reviewSchema = new mongoose.Schema({
   author: String,
   rating: Number,
-  link: String,
+  url: String,
 });
 var gameSchema = new mongoose.Schema({
   name: String,

@@ -18,14 +18,18 @@ router.get('/addGame', function (req, res) {
 })
 
 router.post('/addGame', function (req, res) {
-  var requestGame = { name: req.body.name, price: parseFloat(req.body.price), reviews: [], genre: req.body.genre, consoles: req.body.consoles.split(", ") }
+  var requestReview = { author: req.body.review_author, rating: parseFloat(req.body.review_rating), link: req.body.review_url }
+  var requestGame = { name: req.body.name, price: parseFloat(req.body.price), reviews: {}, genre: req.body.genre, consoles: req.body.consoles.split(", ") }
   // Validate the data
   if(typeof(requestGame.name) === 'string' &&
      typeof(requestGame.price) === 'number' && isFinite(requestGame.price) &&
+     typeof(requestReview.rating) === 'number' && isFinite(requestReview.rating) &&
      typeof(requestGame.genre) === 'string' &&
      Array.isArray(requestGame.consoles) && requestGame.consoles.length != 0 && typeof (requestGame.consoles[0]) === 'string') {
       // Deny request if the price is negative
       if(!(requestGame.price >= 0)) { return res.render('form', { error: true, price: true, active: { new: true } }); }
+      // Deny request if the rating is not between 1 and 10
+      if(!(requestReview.rating >= 1 && requestReview.rating <= 10)) { return res.status(400).send("Rating has to be between 1 and 10"); }
       // Deny request if the game already exists
       Game.findOne({ name: requestGame.name }, function(err, game) {
         if(err) res.render('form', { error: true, conflict: true, active: { new: true } });
@@ -59,7 +63,7 @@ router.get('/free', function (req, res) {
 router.get('/highest_rated', function (req, res) {
   Game.find({}).lean().exec(function(err, gameData) {
     if(err) return Logger.error(err);
-    var sortedGames = _.orderBy(gameData, function(game) { return game.rating; 'desc'}, );
+    var sortedGames = _.orderBy(gameData, function(game) { return game.review.rating; }, 'desc');
     res.render('table', { data: sortedGames, games: true, active: { highest_rated: true } });
   });
 })

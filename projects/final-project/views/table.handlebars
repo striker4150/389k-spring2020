@@ -18,7 +18,7 @@
             <td id="name">{{#if ../games}}{{this.name}}{{else}}<a href="/{{../category}}/{{this}}">{{this}}</a>{{/if}}</td>
             {{#if ../games}}
             <td>{{formatMoney this.price}}</td>
-            <td>{{this.rating}}</td>
+            <td>{{this.review.rating}}</td>
             <td>{{this.genre}}</td>
             <td>{{formatArray this.consoles}}</td>
             {{/if}}
